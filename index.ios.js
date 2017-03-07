@@ -3,6 +3,12 @@ import React, {Component} from 'react';
 import TeamList from './TeamList.js';
 import {AppRegistry, Text, TextInput, View} from 'react-native';
 
+const ListOfPlayingTeams = [
+  {host: {name: 'Barcelona', city: 'Barcelona(Spain)'}, guest: {name: 'Bayern', city: 'Munich(Germany)'}, date: "08.03.2017"},
+  {host: {name: 'ChelseaChelsea', city: 'London(UK)'}, guest: {name: 'Real', city: 'Madrid(Spain)'}, date: "01.04.2017"},
+  {host: {name: 'Manchester United', city: 'Manchester(UK)'}, guest: {name: 'Arsenal', city: 'London(UK)'}, date: "12.04.2017"},
+  {host: {name: 'Internazionale', city: 'Milan(Italy)'}, guest: {name: 'Porto', city: 'Porto(Portugal)'}, date: "20.04.2017"}
+];
 
 class GamesDisplay extends Component {
   constructor(props) {
@@ -14,31 +20,24 @@ class GamesDisplay extends Component {
   }
 
   componentDidMount() {
-    const listofteams = ListOfPlayingTeams;
+    let listofteams = ListOfPlayingTeams;
     this.setState({listofteams});
   }
 
   render() {
     return (
-      <View>
-        <Text>test</Text>
-        <View style={{alignItems: 'center'}}>
-          {this.state.listofteams.map(game =>
-            <TeamList line={game} />
-          )}
-        </View>
+      <View style={{flex: 1, backgroundColor: 'powderblue'}}>
+        {
+          this.state.listofteams.map((game, i) =>
+          {
+            return <TeamList key={'key-' + i}
+                             line={game}/>
+          }
+        )}
       </View>
     )
   }
 }
-
-const ListOfPlayingTeams = [
-  {host: {name: 'h1', city: 'hc1'}, guest: {name: 'g1', city: 'gc1'}, date: "11.11.1111"},
-  {host: {name: 'h2', city: 'hc2'}, guest: {name: 'g2', city: 'gc2'}, date: "22.22.2222"},
-  {host: {name: 'h3', city: 'hc3'}, guest: {name: 'g3', city: 'gc3'}, date: "33.33.3333"},
-];
-
-
 
 AppRegistry.registerComponent('AwesomeProject', () => GamesDisplay);
 
