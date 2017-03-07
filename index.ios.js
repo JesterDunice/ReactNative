@@ -1,45 +1,50 @@
-//AwesomeProject
 import React, {Component} from 'react';
-import TeamList from './TeamList.js';
-import {AppRegistry, Text, TextInput, View} from 'react-native';
+import {AppRegistry, NavigationBar, TouchableHighlight, Text, Navigator, View} from 'react-native';
+import GamesDisplay from './GamesDisplay.js';
+import MyScene from './MyScene.js';
 
-const ListOfPlayingTeams = [
-  {host: {name: 'Barcelona', city: 'Barcelona(Spain)'}, guest: {name: 'Bayern', city: 'Munich(Germany)'}, date: "08.03.2017"},
-  {host: {name: 'ChelseaChelsea', city: 'London(UK)'}, guest: {name: 'Real', city: 'Madrid(Spain)'}, date: "01.04.2017"},
-  {host: {name: 'Manchester United', city: 'Manchester(UK)'}, guest: {name: 'Arsenal', city: 'London(UK)'}, date: "12.04.2017"},
-  {host: {name: 'Internazionale', city: 'Milan(Italy)'}, guest: {name: 'Porto', city: 'Porto(Portugal)'}, date: "20.04.2017"}
-];
-
-class GamesDisplay extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      listofteams: []
-    };
-
-  }
-
-  componentDidMount() {
-    let listofteams = ListOfPlayingTeams;
-    this.setState({listofteams});
-  }
-
+export default class NavAllDay extends Component {
   render() {
+    const routes = [
+      {title: 'First Scene', index: 0},
+      {title: 'Second Scene', index: 1},
+    ];
+    let route_ctrl = 0;
     return (
-      <View style={{flex: 1, backgroundColor: 'powderblue'}}>
-        {
-          this.state.listofteams.map((game, i) =>
-          {
-            return <TeamList key={'key-' + i}
-                             line={game}/>
+      <Navigator
+        initialRoute={routes[0]}
+        initialRouteStack={routes}
+        renderScene={(route, navigator) =>
+          {if (route.index === 0){
+            return <MyScene
+                            title={route.title}
+                            onForward={ () => {
+                              navigator.push({index: 1});
+                            }}
+
+                            // Function to call to go back to the previous scene
+                            onBack={() => {
+                              if (route.index > 0) {
+                               navigator.pop();}}}
+                                                      />
+          } else {return <GamesDisplay
+                                  title={route.title}
+                                  onForward={ () => {
+                                    navigator.push({index: 1});
+                                  }}
+                                  onBack={() => {
+                                    if (route.index > 0) {
+                                    navigator.pop();}}}/>
           }
-        )}
-      </View>
-    )
+          }
+        }
+        style={{padding: 20}}
+      />
+    );
   }
 }
 
-AppRegistry.registerComponent('AwesomeProject', () => GamesDisplay);
+AppRegistry.registerComponent('AwesomeProject', () => NavAllDay);
 
 
 

@@ -1,53 +1,51 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
+import React, {Component} from 'react';
+import {AppRegistry, NavigationBar, TouchableHighlight, Text, Navigator, View} from 'react-native';
+import GamesDisplay from './GamesDisplay.js';
+import MyScene from './MyScene.js';
 
-import React, { Component } from 'react';
-import {
-  AppRegistry,
-  StyleSheet,
-  Text,
-  View
-} from 'react-native';
-
-export default class AwesomeProject extends Component {
+export default class NavAllDay extends Component {
   render() {
+    const routes = [
+      {title: 'First Scene', index: 0},
+      {title: 'Second Scene', index: 1},
+    ];
+    let route_ctrl = 0;
     return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit index.android.js
-        </Text>
-        <Text style={styles.instructions}>
-          Double tap R on your keyboard to reload,{'\n'}
-          Shake or press menu button for dev menu
-        </Text>
-      </View>
+      <Navigator
+        initialRoute={routes[0]}
+        initialRouteStack={routes}
+        renderScene={(route, navigator) =>
+          {if (route.index === 0){
+            return <MyScene
+                            title={route.title}
+                            onForward={ () => {
+                              navigator.push({index: 1});
+                            }}
+
+                            // Function to call to go back to the previous scene
+                            onBack={() => {
+                              if (route.index > 0) {
+                               navigator.pop();}}}
+                                                      />
+          } else {return <GamesDisplay
+                                  title={route.title}
+                                  onForward={ () => {
+                                    navigator.push({index: 1});
+                                  }}
+                                  onBack={() => {
+                                    if (route.index > 0) {
+                                    navigator.pop();}}}/>
+          }
+          }
+        }
+        style={{padding: 20}}
+      />
     );
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-});
+AppRegistry.registerComponent('AwesomeProject', () => NavAllDay);
 
-AppRegistry.registerComponent('AwesomeProject', () => AwesomeProject);
+
+
+
